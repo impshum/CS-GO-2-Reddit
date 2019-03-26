@@ -1,0 +1,4 @@
+requests
+praw
+schedule
+beautifulsoup4
