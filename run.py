@@ -3,28 +3,41 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 import praw
 import schedule
+import tweepy
 from time import sleep
 
 # DO NOT EDIT ABOVE THIS LINE
 
-client_id = 'XXXX' # app id
-client_secret = 'XXXX' # app secret
-reddit_user = 'XXXX' # reddit username
-reddit_pass = 'XXXX' # reddit password
+twitter_on = 1 # post to twitter
+consumer_key = 'XXXX'
+consumer_secret = 'XXXX'
+access_key = 'XXXX'
+access_secret = 'XXXX'
+
+reddit_on = 1 # post to reddit
+client_id = 'XXXX'
+client_secret = 'XXXX'
+reddit_user = 'XXXX'
+reddit_pass = 'XXXX'
 
 target_subreddit = 'XXXX' # subreddit to post to
 target_team = 'XXXX' # case sensitive
 
 schedule_time = '07:30' # 24hr format
 
-test_mode = 1 # flip te switch to post to reddit
+test_mode = 1 # flip the switch
 
 # DO NOT EDIT BELOW THIS LINE
 
 if not test_mode:
-    reddit = praw.Reddit(user_agent='CS:GO 2 Reddit (by /u/impshum)',
-                         client_id=client_id, client_secret=client_secret,
-                         username=reddit_user, password=reddit_pass)
+    if reddit_on:
+        reddit = praw.Reddit(user_agent='CS:GO 2 Reddit (by /u/impshum)'',
+                             client_id=client_id, client_secret=client_secret,
+                             username=reddit_user, password=reddit_pass)
+    if twitter_on:
+        auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+        auth.set_access_token(access_key, access_secret)
+        api = tweepy.API(auth)
 else:
     print('\nTEST MODE\n')
 
@@ -97,8 +110,7 @@ def main():
         if team1 == target_team or team2 == target_team:
             event = match['event']
             time = match['time']
-            date = datetime.strptime(
-                match['date'], '%Y-%m-%d').strftime('%d/%m/%Y')
+            date = datetime.strptime(match['date'], '%Y-%m-%d').strftime('%d/%m/%Y')
             title = "{} {} | {} vs {} | {}".format(
                 date, time, team1, team2, event)
 
@@ -106,13 +118,16 @@ def main():
                 print(title)
 
                 if not test_mode:
-                    reddit.subreddit(target_subreddit).submit(
-                        title=title, selftext='')
+                    if reddit_on:
+                        reddit.subreddit(target_subreddit).submit(
+                            title=title, selftext='')
+                    if twitter_on:
+                        api.update_status(status=title)
 
 
 if __name__ == '__main__':
     main()
-    schedule.every().day.at(schedule_time).do(main)
+    schedule.every().day.at('07:30').do(main)
     while True:
         schedule.run_pending()
         sleep(1)
