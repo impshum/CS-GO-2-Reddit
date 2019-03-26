@@ -1,5 +1,7 @@
 # CS:GO 2 Reddit
 
+![](https://www.hltv.org/img/static/openGraphHltvLogo.png)
+
 Scrapes http://www.hltv.org/matches every day at a given time. If the team it's looking for has a game scheduled it'll post the details to Reddit (and not repeat itself).
 
 Demo: https://www.reddit.com/r/recycledrobot/comments/b5u3ln/26042019_0000_cloud9_vs_spacestation_ecs_season_7/
