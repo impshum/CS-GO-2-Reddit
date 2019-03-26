@@ -7,15 +7,17 @@ from time import sleep
 
 # DO NOT EDIT ABOVE THIS LINE
 
-client_id = 'XXXX'
-client_secret = 'XXXX'
-reddit_user = 'XXXX'
-reddit_pass = 'XXXX'
+client_id = 'XXXX' # app id
+client_secret = 'XXXX' # app secret
+reddit_user = 'XXXX' # reddit username
+reddit_pass = 'XXXX' # reddit password
 
-target_subreddit = 'XXXX'
-target_team = 'XXXX'
+target_subreddit = 'XXXX' # subreddit to post to
+target_team = 'XXXX' # case sensitive
 
-test_mode = 1
+schedule_time = '07:30' # 24hr format
+
+test_mode = 1 # flip te switch to post to reddit
 
 # DO NOT EDIT BELOW THIS LINE
 
@@ -110,7 +112,7 @@ def main():
 
 if __name__ == '__main__':
     main()
-    schedule.every().day.at('07:30').do(main)
+    schedule.every().day.at(schedule_time).do(main)
     while True:
         schedule.run_pending()
         sleep(1)
